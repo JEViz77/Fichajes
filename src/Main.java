@@ -1,5 +1,6 @@
 import com.formacom.Fichajes;
 
+import com.formacom.FichajesDB;
 import com.formacom.IFichajes;
 import com.formacom.Registro;
 
@@ -22,7 +23,7 @@ ____________________________________________________________
 
     public static void main(String[] args) {
         Scanner leer=new Scanner(System.in);
-        IFichajes fichajes=new Fichajes();
+        IFichajes fichajes=new FichajesDB();
         String opcionSeleccionada="";
         final String MENU_ADMINISTRADOR= """
 ____________________________________________________________                           
