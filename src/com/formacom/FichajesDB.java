@@ -52,9 +52,34 @@ public class FichajesDB implements IFichajes{
 
     @Override
     public List<Registro> informe_por_dia(LocalDate dia) {
+        List<Registro> informe = new ArrayList<>();
+        String sql = "SELECT U.dni, U.nombre, R.modo, R.created_at " +
+                "FROM registros R " +
+                "INNER JOIN usuarios U ON R.dni = U.dni " +
+                "WHERE DATE(R.created_at) = ?";
 
-        return List.of();
+        try (Connection conexion = DatabaseConnection.getConnection();
+             PreparedStatement pst = conexion.prepareStatement(sql)) {
+
+            pst.setDate(1, Date.valueOf(dia));  // Establecemos la fecha en el PreparedStatement
+
+            try (ResultSet resultSet = pst.executeQuery()) {
+                while (resultSet.next()) {
+                    String dni = resultSet.getString("dni");
+                    String nombre = resultSet.getString("nombre");
+                    String modo = resultSet.getString("modo");
+                    LocalDateTime fecha = resultSet.getTimestamp("created_at").toLocalDateTime();
+                    informe.add(new Registro(dni, nombre, fecha, modo));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  // Log de error
+            return List.of();  // Retornamos una lista vacía en caso de error
+        }
+
+        return informe;
     }
+
 
     @Override
     public List<Registro> informe_por_alumno(String dni) {

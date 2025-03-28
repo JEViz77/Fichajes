@@ -1,5 +1,7 @@
 package com.formacom;
 
+import java.util.Objects;
+
 public class Alumno {
     private String dni;
     private String nombre;
@@ -32,4 +34,20 @@ public class Alumno {
                 ", nombre='" + nombre + '\'' +
                 '}';
     }
+
+    // En la clase Alumno
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Alumno alumno = (Alumno) obj;
+        return Objects.equals(dni, alumno.dni);
+    }
+
+    @Override
+    public int hashCode() {
+        return dni != null ? dni.hashCode() : 0;
+    }
+
 }
+
